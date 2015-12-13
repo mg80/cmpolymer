@@ -7,6 +7,7 @@ var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var bower = require('gulp-bower');
 
 // Lint Task
 gulp.task('lint', function() {
@@ -32,31 +33,30 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('dist/js'));
 });
 
-
 //  Copy bootstrap min CSS
 gulp.task('bootstrap-css', function() {
-    return gulp.src('bower_components/bootstrap/dist/css/bootstrap.min.css')
+    return gulp.src('lib/bootstrap/dist/css/bootstrap.min.css')
         .pipe(concat('bootstrap.min.css'))
         .pipe(gulp.dest('dist/styles'));
 });
 
 //  Copy bootstrap min JS
 gulp.task('bootstrap-js', function() {
-    return gulp.src('bower_components/bootstrap/dist/js/bootstrap.min.js')
+    return gulp.src('lib/bootstrap/dist/js/bootstrap.min.js')
         .pipe(concat('bootstrap.min.js'))
         .pipe(gulp.dest('dist/js'));
 });
 
 //  Copy jquery
 gulp.task('jquery', function() {
-    return gulp.src('bower_components/jquery/dist/jquery.min.js')
+    return gulp.src('lib/jquery/dist/jquery.min.js')
         .pipe(concat('jquery.min.js'))
         .pipe(gulp.dest('dist/js'));
 });
 
 //  Copy webcomponents
 gulp.task('web-components', function() {
-    return gulp.src('bower_components/webcomponentsjs/webcomponents.js')
+    return gulp.src('lib/webcomponentsjs/webcomponents.js')
         .pipe(concat('webcomponents.js'))
         .pipe(gulp.dest('dist/js'));
 });
@@ -69,9 +69,14 @@ gulp.task('src-css', function() {
 });
 
 
-gulp.task('css', ['bootstrap-css', 'sr-ccss']);
+gulp.task('css', ['bootstrap-css', 'src-css']);
 gulp.task('js', ['bootstrap-js', 'scripts', 'jquery', 'web-components']);
 
+//run bower
+gulp.task('bower', function() {
+    return bower()
+        .pipe(gulp.dest('lib/'))
+});
 
 // Watch Files For Changes
 gulp.task('watch', function() {
@@ -80,4 +85,4 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['lint', 'sass', 'js', 'watch', 'css']);
+gulp.task('default', ['lint', 'sass', 'js', 'watch', 'css', 'bower']);
