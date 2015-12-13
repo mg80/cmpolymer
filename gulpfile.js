@@ -3,28 +3,20 @@ var gulp = require('gulp');
 
 // Include Our Plugins
 var jshint = require('gulp-jshint');
-var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var bower = require('gulp-bower');
 
 // Lint Task
-gulp.task('lint', function() {
+gulp.task('lint', function () {
     return gulp.src('js/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
-// Compile Our Sass
-gulp.task('sass', function() {
-    return gulp.src('scss/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('css'));
-});
-
 // Concatenate & Minify JS
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
     return gulp.src('src/js/*.js')
         .pipe(concat('all.js'))
         .pipe(gulp.dest('dist/js'))
@@ -34,55 +26,53 @@ gulp.task('scripts', function() {
 });
 
 //  Copy bootstrap min CSS
-gulp.task('bootstrap-css', function() {
+gulp.task('bootstrap-css', function () {
     return gulp.src('lib/bootstrap/dist/css/bootstrap.min.css')
         .pipe(concat('bootstrap.min.css'))
         .pipe(gulp.dest('dist/styles'));
 });
 
 //  Copy bootstrap min JS
-gulp.task('bootstrap-js', function() {
+gulp.task('bootstrap-js', function () {
     return gulp.src('lib/bootstrap/dist/js/bootstrap.min.js')
         .pipe(concat('bootstrap.min.js'))
         .pipe(gulp.dest('dist/js'));
 });
 
 //  Copy jquery
-gulp.task('jquery', function() {
+gulp.task('jquery', function () {
     return gulp.src('lib/jquery/dist/jquery.min.js')
         .pipe(concat('jquery.min.js'))
         .pipe(gulp.dest('dist/js'));
 });
 
 //  Copy webcomponents
-gulp.task('web-components', function() {
+gulp.task('web-components', function () {
     return gulp.src('lib/webcomponentsjs/webcomponents.js')
         .pipe(concat('webcomponents.js'))
         .pipe(gulp.dest('dist/js'));
 });
 
 //  Copy css
-gulp.task('src-css', function() {
+gulp.task('src-css', function () {
     return gulp.src('src/styles/*.css')
         .pipe(concat('src.css'))
         .pipe(gulp.dest('dist/styles'));
 });
 
+//run bower and move stuff to lib
+gulp.task('bower', function () {
+    return bower()
+        .pipe(gulp.dest('lib'));
+});
 
 gulp.task('css', ['bootstrap-css', 'src-css']);
 gulp.task('js', ['bootstrap-js', 'scripts', 'jquery', 'web-components']);
 
-//run bower
-gulp.task('bower', function() {
-    return bower()
-        .pipe(gulp.dest('lib/'))
-});
-
 // Watch Files For Changes
-gulp.task('watch', function() {
+gulp.task('watch', function () {
     gulp.watch('src/js/*.js', ['lint', 'js']);
-    gulp.watch('scss/*.scss', ['sass']);
 });
 
 // Default Task
-gulp.task('default', ['lint', 'sass', 'js', 'watch', 'css', 'bower']);
+gulp.task('default', ['lint', 'js', 'watch', 'css', 'bower']);
