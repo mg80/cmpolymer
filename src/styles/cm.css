@@ -1,0 +1,9 @@
+/*Overriding some CM styles*/
+.CodeMirror-gutters {
+    position: fixed !important;
+    height: 100% !important;
+}
+
+.CodeMirror {
+    height: 100%;
+}
