@@ -1,0 +1,49 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="code-mirror">
+    <script src="../node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="../node_modules/codemirror/mode/javascript/javascript.js"></script>
+
+    <style>
+        .code-mirror {
+            margin-top: 50px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="../node_modules/codemirror/lib/codemirror.css">
+
+    <template>
+        <div>
+            <span>
+                <textarea id="{{cmID}}" style="display:none;">a</textarea>
+            </span>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "code-mirror",
+
+        properties: {
+            cmID: String,
+            options: String
+        },
+
+        ready: function () {
+            if (!this.cmID) {
+                console.error("You must specify a cm-id attribute when using the code-mirror component");
+                return;
+            }
+            var cm = document.getElementById(this.cmID);
+            if(!cm)
+                return;
+
+            this.editor = CodeMirror.fromTextArea(cm, {
+                mode: "javascript",
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                lineNumbers: true
+            });
+        }
+    });
+</script>
